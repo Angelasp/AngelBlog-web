@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${@config.getKey('blog.index.title')}"></title>
+    <meta name="keywords" th:content="${@config.getKey('blog.index.keywords')}">
+    <meta name="description" th:content="${@config.getKey('blog.index.description')}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/blog/myblog/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/blog/myblog/css/base.css}" rel="stylesheet">
+    <link  th:href="@{/blog/myblog/css/m.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/blog/myblog/plugin/iconfont/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{/blog/myblog/plugin/font-icon/icon.css}"/>
+    <script th:src="@{/blog/myblog/js/jquery-1.8.2.min.js}" ></script>
+    <script th:src="@{/blog/myblog/js/comm.js}"></script>
+    <!--[if lt IE 9]>
+    <script th:src="@{/blog/myblog/js/modernizr.js}"></script>
+    <![endif]-->
+    <script th:src="@{/blog/myblog/js/ajax.js}"></script>
+    <link th:href="@{/blog/myblog/css/shCoreDefault.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/blog/myblog/js/shCore.js}"></script>
+    <script th:src="@{/blog/myblog/plugin/layer/layer.js}"></script>
+</head>
+<body>
+
+<!--top begin-->
+<div th:replace="blog/theme/myblog/header"></div>
+<!--top end-->
+<div class="container">
+<article>
+<!-- baseGroup -->
+<div class="whitebg baseGroup w1100 mt100 layoutAuto">
+    <!-- detailGrid -->
+    <div class="detailGrid my">
+
+        <!-- rightGrid -->
+        <div class="rightGrid my">
+            <div class="myInfoGrid">
+                <div class="commonHeadLabel small">
+                    <div class="title">关于本站</div>
+                </div>
+                <i class="avatar"></i>
+                <div class="itemTitle">
+                    <p>hey, I am</p><h6>Alcedo</h6>
+                </div>
+                <div class="itemTitle">
+                    <p>邮箱：</p><h6><a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=815657032@qq.com" target="_blank">815657032@qq.com</a></h6>
+                </div>
+                <div class="itemTitle">
+                    <p>博客：</p><h6>http://www.angelasp.com</h6>
+                </div>
+
+                <div class="detail">
+                    <p>我是一个设计爱好者、斜杠青年、伪文青，同时也是一位全栈攻(ban)城(zhuan)狮(de)。</p>
+                    <p>目前在帝都的一家互联网公司供职。平时不忙时，喜欢偶发性改改UI、写写一些稀奇古怪的界面，然后发布一些围绕angelcms的模板。</p>
+                    <p>最后，祝自由快乐!</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 留言信息 -->
+        <div class="commonHeadLabel small">
+            <div class="title">留言板</div>
+        </div>
+
+
+        <form id="comment-form" class="form-horizontal commentGrid mt-10 comment guestBookGroup">
+            <input   name="tid" type="hidden" value="-1">
+            <input   name="type" type="hidden" value="liuyan">
+            <div id="user-name-content" class="user-name-content">欢迎您：<b id="user-name"></b></div>
+            <div class="guestBookGroup" id="user-info" style="display: none;padding: 0;">
+
+                <div class="inputLabel" style="width: 30%;float:left;margin-right:38px;">
+                    <input id="nickname" type="text" class="inputBlock"  name="userName" placeholder="昵称(必填)">
+                </div>
+                <div class="inputLabel" style="width: 30%;float:left;margin-right: 38px;">
+                    <input id="qq" type="text" class="inputBlock"  name="qq" placeholder="QQ（可获取头像和昵称）">
+                </div>
+                <div class="inputLabel" style="width: 30%;float:left;">
+                    <input id="email" type="text" class="inputBlock"  name="email" placeholder="邮箱">
+                </div>
+            </div>
+
+            <textarea id="comment-textarea" style="background: #fff;" class="commentTextarea"  name="content" placeholder="我来说两句~"></textarea>
+            <input type="button" id="submitCommentBtn" name="dosubmit" value="提交留言" class="submitBtn"/>
+
+        </form>
+        <!-- 留言列表 -->
+        <div class="commonHeadLabel small mt40">
+            <div class="title">最新留言</div>
+        </div>
+        <div class="commentGrid" style="padding: 0 10px;">
+            <ul class="itemUl comment" id="commentList">
+
+            </ul>
+        </div>
+
+        <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+        <script>
+            var tid=-1;
+            var comment_type="liuyan";
+        </script>
+        <script  th:src="@{/blog/myblog/js/comment.js}"></script>
+
+        <!-- 友联 -->
+        <div class="commonHeadLabel small mt40">
+            <div class="title">友情链接 <small class="info" style="font-weight:normal;">/ 交换友链，请发E-mail至815657032@qq.com</small></div>
+        </div>
+        <div class="newArticleGrid link">
+            <div  th:each="item:${@angel.getFriendLinks()}"  class="itemLi layoutAuto">
+                <a th:href="${item.link}"   target="_blank" class="content">
+                    <div class="img" th:attr="style='background:url('+@{${item.logo}}+') no-repeat center; background-size:cover;'"></div>
+                    <h2 th:text="${item.name}"></h2>
+                    <p th:text="${#strings.abbreviate(item.description,65)}"></p>
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- 更新日志 开始 -->
+        <div class="commonHeadLabel small mt40">
+            <div class="title">更新日志</div>
+        </div>
+        <div class="detailGroup">
+            <ul class="updateGroup">
+                <li>
+                    <p class="title"><span class="cfBlue mr10">Version 1.0</span><small>2021/09/19</small></p>
+                    <p><b>Add:</b></p>
+                    <p class="pl20">首页增加“最新留言”板块，展示留言信息。</p>
+                    <p><b>Update:</b></p>
+                    <p class="pl20">1: 升级至响应式（2021/09/19 Update.）。</p>
+                </li>
+            </ul>
+        </div>
+        <!-- 更新日志 结束 -->
+    </div>
+</div>
+</article>
+</div>
+<div th:replace="blog/theme/myblog/footer"></div>
+
+<script type="text/javascript">
+    function check(){
+        if(document.guest.title.value==""){
+            layer.msg("留言主题不能为空！");
+            return false;
+        }
+        if(document.guest.name.value==""){
+            layer.msg("请填写您的昵称！");
+            return false;
+        }
+        if(document.guest.bookmsg.value==""){
+            layer.msg("请填写留言内容！");
+            return false;
+        }
+        if(document.guest.code.value==""){
+            layer.msg("请填写验证码！");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>

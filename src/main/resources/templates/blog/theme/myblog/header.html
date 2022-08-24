@@ -1,0 +1,52 @@
+<!--top begin-->
+<header class="row" id="header">
+    <div class="navbox">
+        <h2 id="mnavh"><span class="navicon"></span></h2>
+        <div class="logo"><a href="https://www.yangqq.net/"  th:alt="${@config.getKey('blog.index.title')}" th:href="${@config.getKey('site.url')}" th:utext="${@config.getKey('blog.index.title')} + '| <font class=font16>Alcedo</font>'"></a></div>
+        <nav>
+            <ul id="starlist">
+                <li><a th:class="${categoryId=='index' ? 'current' : ''} " th:href="@{/}" title="首页">首页</a></li>
+                <li><a th:href="@{/listarticle}" th:class="${categoryId=='category'? 'current':''}" target="_blank">文章分类</a></li>
+ <!--           <li class="menu">
+                    <a href="">博客</a>
+                    <ul class="sub">
+                    <li><a href="">心得笔记</a></li>
+                    <li><a href="">个人博客搭建</a></li>
+                    </ul>
+                    <span></span>
+                </li>
+            -->
+                <li><a th:href="@{/resource/list?pageSize=6}" th:class="${categoryId=='resource'? 'current':''}" >资源</a></li>
+                <li><a th:href="@{/siteMsg}" th:class="${categoryId=='siteMsg'? 'current':''}" >留言</a></li>
+                <li><a href="http://www.angelasp.com" title="Angel工作室">官方</a></li>
+            </ul>
+        </nav>
+        <div class="searchico"></div>
+    </div>
+</header>
+<div class="searchbox">
+    <div class="search">
+        <form th:action="@{/search}" target="_blank" onsubmit="return checkSearch()">
+            <input name="content" id="searchInput" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+            <input name="Submit" class="input_submit" value="搜索" type="submit">
+        </form>
+    </div>
+    <div class="searchclose"></div>
+</div>
+<!--top end-->
+
+<script type="text/javascript">
+    function checkSearch(){
+        var searchInput = $('#searchInput').val();
+        var searchVal = $.trim(searchInput);
+        if(searchVal == ''){
+            layer.msg("哎呀，你好像忘记输入搜索内容了！");
+            return false;
+        }
+        if(searchVal.length < 2){
+            layer.msg("搜索关键字至少需要2个字哟！");
+            return false;
+        }
+        return true;
+    }
+</script>

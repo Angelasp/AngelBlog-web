@@ -1,0 +1,138 @@
+# 项目名称、版本、版权年份
+angelblog:
+  name: AngelBlog
+  version: 1.0.0
+  copyrightYear: 2022
+  demoEnabled: true
+  addressEnabled: true
+  profile: D:/profile/
+#开发环境配置
+server:
+  #端口
+  port: 8086
+  tomcat:
+    uri-encoding: utf-8
+#日志配置
+logging:
+  level:
+    com.angelblog: debug
+    org.springframework: WARN
+    org.spring.springboot.dao: debug
+#用户配置
+user:
+  password:
+    #密码错误{maxRetryCount}次锁定10分钟
+    maxRetryCount: 5
+#Spring配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/angelblog?useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
+    #useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
+    username: root
+    password: 123456
+
+    # 初始化大小，最小，最大
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    #useGlobalDataSourceStat: true
+  thymeleaf:
+    check-template-location: true  #check-tempate-location: 检查模板路径是否存在
+    mode: HTML
+    encoding: utf-8
+    cache: false                   #开发时关闭缓存,不然没法看到实时页面
+  #thymeleaf end
+
+  messages:
+    #国际化资源文件路径
+    basename: zn/messages
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: druid
+  #文件上传
+  servlet:
+    multipart:
+      max-file-size:  30MB
+      max-request-size:  30MB
+
+  devtools:
+    restart:
+      #禁用devtools模块的热部署功能
+      enabled: true
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.angelblog.project
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mybatis/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+# PageHelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+# Shiro
+shiro:
+  user:
+    # 登录地址
+    loginUrl: /admin/login
+    # 权限认证失败地址
+    unauthorizedUrl: /admin/unauth
+    # 首页地址
+    indexUrl: /
+    # 验证码开关
+    captchaEbabled: true
+    # 验证码类型 math 数组计算 char 字符
+    captchaType: math
+  cookie:
+    # 设置Cookie的域名 默认空，即当前访问的域名
+    domain:
+    # 设置cookie的有效访问路径
+    path: /
+    # 设置HttpOnly属性
+    httpOnly: true
+    # 设置Cookie的过期时间，天为单位
+    maxAge: 30
+  session:
+    # Session超时时间（默认30分钟）
+    expireTime: 30
+    # 同步session到数据库的周期（默认1分钟）
+    dbSyncPeriod: 1
+    # 相隔多久检查一次session的有效性，默认就是10分钟
+    validationInterval: 10
+# 代码生成
+gen:
+  # 作者
+  author: Alcedo
+  # 默认生成包路径 module 需改成自己的模块名称 如 system monitor tool
+  packageName: com.angelblog.project.module
+  # 自动去除表前缀，默认是true
+  autoRemovePre: true
+  # 表前缀(类名不会包含表前缀)
+  tablePrefix: sys_
+
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" th:content="${@config.getKey('blog.index.keywords')}">
+    <meta name="description" th:content="${@config.getKey('blog.index.description')}">
+    <title th:text="${@config.getKey('blog.index.title')}"></title>
+    <meta name="baidu-site-verification" content="" />
+    <link th:href="@{/blog/myblog/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/blog/myblog/css/base.css}" rel="stylesheet">
+    <link  th:href="@{/blog/myblog/css/m.css}" rel="stylesheet">
+    <script th:src="@{/blog/myblog/js/jquery-1.8.2.min.js}" ></script>
+    <script th:src="@{/blog/myblog/js/comm.js}"></script>
+    <!--[if lt IE 9]>
+    <script th:src="@{/blog/myblog/js/modernizr.js}"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- header -->
+<div class="fixedHeadSwitch">
+    <div th:replace="blog/theme/myblog/header"></div>
+</div>
+
+<div class="container">
+<!-- article -->
+<article class="whitebg baseGroup w1200 mt120 layoutAuto">
+<div class="baseGroup mt120 layoutAuto" id="channelGroup">
+
+    <div th:if="${not #lists.isEmpty(resourceList)}" class="articleModeGrid on w3">
+
+        <div th:each="item,temp:${resourceList}"   class="itemLi layoutAuto">
+            <a th:href="@{${'/resource/'+item.id}}"  target="_blank" class="content">
+                <div class="imgBox full">
+                    <img class="img" th:src="@{${item.coverImage}}" th:alt="${item.title}">
+                </div>
+                <div class="articleGroup">
+                    <h2 th:text="${#strings.abbreviate(item.title,120)}"></h2>
+                    <div class="btmInfo">
+                        <span class="strong">LOAD MORE</span>
+                        <span class="text" >[[${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}]] / 浏览 [[${item.hit}]]</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+    <div id="pageGroup" th:if="${totalPages>1}">
+        <span class="pageinfo">共<strong>[[${totalPages}]]</strong>页<strong>[[${total}]]</strong>条记录</span>
+        <a th:href="@{'/resource/list?pageSize=6'}" class="homepage">首页</a>
+        <a th:if="${not hasPrevious}" href="javascript:;" class="prepage nopage">上页</a>
+        <a th:if="${hasPrevious}" th:href="@{'/resource/list?pageNum='+${prePage}+'&pageSize=6'}"  class="prepage">上页</a>
+        <a  th:each="item:${navNums}" th:href="@{'/resource/list?pageNum='+${item}+'&pageSize=6'}" class="listpage" th:text="${item}" th:classappend="${item+'' ==currentPage+'' ? 'curpage':''}"></a>
+        <a th:if="${hasNext}" th:href="@{'/resource/list?pageNum='+${nextPage}+'&pageSize=6'}"  class="nextpage">下页</a>
+        <a th:if="${not hasNext}"href="javascript:;" class="nextpage nopage">下页</a>
+        <a th:href="@{'/resource/list?pageNum='+${totalPages}+'&pageSize=6'}"  class="endpage">尾页</a>
+    </div>
+
+</div>
+</article>
+</div>
+<!-- footer -->
+<div th:replace="blog/theme/myblog/footer"></div>
+</body>
+</html>

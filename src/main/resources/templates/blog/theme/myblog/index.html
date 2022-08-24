@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" th:content="${@config.getKey('blog.index.keywords')}">
+    <meta name="description" th:content="${@config.getKey('blog.index.description')}">
+    <title th:text="${@config.getKey('blog.index.title')}"></title>
+    <meta name="baidu-site-verification" content=""/>
+    <link th:href="@{/blog/myblog/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/blog/myblog/css/base.css}" rel="stylesheet">
+    <link th:href="@{/blog/myblog/css/m.css}" rel="stylesheet">
+    <script th:src="@{/blog/myblog/js/jquery-1.8.2.min.js}"></script>
+    <script th:src="@{/blog/myblog/js/comm.js}"></script>
+    <!--[if lt IE 9]>
+    <script th:src="@{/blog/myblog/js/modernizr.js}"></script>
+    <![endif]-->
+</head>
+<body>
+<div th:replace="blog/theme/myblog/header"></div>
+<div class="container">
+    <article>
+        <!--lbox begin-->
+        <div class="lbox">
+            <!--banbox begin-->
+            <div class="banbox">
+                <div class="banner">
+                    <div id="banner" class="fader">
+                        <li class="slide" th:each="item,temp:${@angel.selectIndexBannerImgs('blog_index')}"><a
+                                th:href="@{${item.link}}" target="_blank"><img th:src="@{${item.savePath}}"
+                                                                               th:alt="${item.materialName}"></a></li>
+                        <div class="fader_controls">
+                            <div class="page prev" data-target="prev"></div>
+                            <div class="page next" data-target="next"></div>
+                            <ul class="pager_list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--banbox end-->
+            <!--headline begin-->
+            <div class="headline">
+                <ul>
+                    <li th:each="item,temp:${@angel.recommendedList(2)}">
+                        <a th:href="@{${'/article/'+item.id}}" th:title="${item.title}" target="_blank"><img
+                                th:src="${item.coverImage}" th:alt="${item.title}"><span th:text="${item.title}"></span></a>
+                    </li>
+                </ul>
+            </div>
+            <!--headline end-->
+            <div class="clearblank"></div>
+            <div class="ad whitebg">
+                <a href='https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=ga24pnf9' target=_blank><img
+                        src='/blog/myblog/images/49acdd088cf7c28b71c7ac0d674a00e2.png' border=0 alt=''></a>
+            </div>
+            <div class="tab_box whitebg">
+
+                <div class="tab_buttons">
+                    <ul>
+                        <li class="newscurrent">最近更新</li>
+                        <li>推荐资源</li>
+                    </ul>
+                </div>
+
+                <div class="newstab">
+                    <div class="newsitem">
+                        <div class="newspic">
+                            <ul>
+                                <li th:each="item,temp:${@angel.recentList(2)}">
+                                    <a th:href="@{${'/article/'+item.id}}" target="_blank">
+                                        <img th:src="@{${item.coverImage}}" th:alt="${item.title}">
+                                        <span th:text="${item.title}"></span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <ul class="newslist">
+                            <li th:each="item,temp:${@angel.hotList(5)}">
+                                <i></i>
+                                <a th:href="@{${'/article/'+item.id}}" title="${item.title}" th:text="${item.title}" target="_blank"></a>
+                                <p th:text="${#strings.abbreviate(item.description,95)}"></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="newsitem">
+                        <div class="newspic">
+                            <ul>
+                                <li th:each="item,temp:${@angel.recommendedResourceList(2)}">
+                                    <a th:href="@{${'/resource/'+item.id}}" target="_blank">
+                                        <img th:src="@{${item.coverImage}}" th:alt="${item.title}">
+                                        <span th:text="${item.title}"></span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <ul class="newslist">
+                            <li th:each="item,temp:${@angel.indexResourceList(5)}" th:with="type=${item.extraName}" >
+                                <i></i>
+                                <a th:href="@{${'/'+type+'/'+item.id}}"  title="${item.title}" th:text="${item.title}" target="_blank"></a>
+                                <p th:text="${#strings.abbreviate(item.description,95)}"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <!--tab_box end-->
+
+            <!--bloglist start-->
+            <div class="whitebg bloglist">
+                <h2 class="htitle"><span class="hnav"><a href="/listarticle" target="_blank">更多</a></span>个人博客</h2>
+                <ul>
+
+                    <li th:each="item,temp:${@angel.avatarIndexList(8)}" th:with="type=${item.extraName}">
+                        <h3 class="blogtitle"><b>【顶】</b>
+                            <a th:href="@{${'/'+type+'/'+item.id}}" th:text="${item.title}" target="_blank"></a>
+                        </h3>
+                        <span class="blogpic imgscale" th:if="${not #strings.isEmpty(item.coverImage)}">
+               <a th:href="@{${'/'+type+'/'+item.id}}" th:text="${item.title}">
+                   <img th:src="@{${item.coverImage}}" th:alt="${item.title}">
+               </a>
+           </span>
+                        <p class="blogtext" th:text="${#strings.abbreviate(item.description,95)}"></p>
+                        <p class="bloginfo">
+                            <i class="avatar"><img src="/blog/myblog/images/avatar.jpg"></i>
+                            <span>Alcedo</span>
+                            <span th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                            <span>【浏览 [[${item.hit}]]】</span></p>
+                        <a th:href="@{${'/'+type+'/'+item.id}}" class="viewmore">阅读更多</a>
+                    </li>
+                </ul>
+            </div>
+            <!--bloglist end-->
+
+        </div>
+        <div class="rbox">
+            <div class="card">
+                <h2>Alcedo</h2>
+                <p>职业：程序员，全栈工程师</p>
+                <p>现居：北京</p>
+                <p>工作室：Angel工作室-软件网站建站</p>
+                <p>Email：815657032@qq.com</p>
+                <ul class="linkmore">
+                    <li><a href="https://blog.csdn.net/Angel_asp" target="_blank" class="iconfont icon-zhuye"
+                           title="Angel工作室"></a></li>
+                    <li><a href="mailto:815657032@qq.com" target="_blank" class="iconfont icon-youxiang" title="我的邮箱"
+                           rel="nofollow"></a></li>
+                    <li><a href="http://wpa.qq.com/msgrd?v=3&uin=815657032&site=qq&menu=yes" target="_blank"
+                           class="iconfont icon---" title="QQ联系我" rel="nofollow"></a></li>
+                    <li id="weixin"><a href="#" target="_blank" class="iconfont icon-weixin" title="关注我的微信"></a><i><img
+                            src="/blog/myblog/images/wxgzh.jpg"></i></li>
+                </ul>
+            </div>
+
+            <div class="whitebg tuijian">
+                <h2 class="htitle">站长推荐</h2>
+
+                <ul>
+                    <li th:each="item,temp:${@angel.recommendedList(6)}">
+                        <a th:href="@{${'/article/'+item.id}}" th:title="${item.title}" target="_blank"><i>
+                            <img th:src="@{${item.coverImage}}" th:alt="${item.title}"/>
+                        </i>
+                            <p th:text="${item.title}"></p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="whitebg wenzi">
+                <h2 class="htitle">热门标签</h2>
+                <div class="indexTagGrid">
+                    <a th:each="item:${@angel.getTagsCloud()}" th:href="@{${'/tag/'+item.tagId}}"
+                       th:text="${item.tagName}" class="item" target="_blank"></a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+
+            <div class="whitebg wenzi">
+                <h2 class="htitle">最新留言</h2>
+                <div class="commentGrid">
+                    <ul class="itemUl">
+                        <li th:each="item:${@angel.newComments(4)}" class="item">
+                            <div class="username">[[${item.userName}]] <span
+                                    th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}"></span></div>
+                            <div class="commentGroup">
+                                <p class="detailText" th:utext="${item.content}"></p>
+                            </div>
+                        </li>
+                        <li>
+                            <a th:href="@{/siteMsg}" target="_blank" class="moreBtn">我要留言</a>
+                        </li>
+                        <li th:if="${#lists.isEmpty(@angel.newComments(4))}" class="tips">暂无留言</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </article>
+</div>
+<div th:replace="blog/theme/myblog/footer"></div>
+
+</body>
+</html>

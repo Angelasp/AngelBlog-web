@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${@config.getKey('blog.index.title')}"></title>
+    <meta name="keywords" th:content="${@config.getKey('blog.index.keywords')}">
+    <meta name="description" th:content="${@config.getKey('blog.index.description')}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/blog/myblog/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/blog/myblog/css/base.css}" rel="stylesheet">
+    <link  th:href="@{/blog/myblog/css/m.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/blog/myblog/plugin/iconfont/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{/blog/myblog/plugin/font-icon/icon.css}"/>
+    <script th:src="@{/blog/myblog/js/jquery-1.8.2.min.js}" ></script>
+    <script th:src="@{/blog/myblog/js/comm.js}"></script>
+    <!--[if lt IE 9]>
+    <script th:src="@{/blog/myblog/js/modernizr.js}"></script>
+    <![endif]-->
+    <script th:src="@{/blog/myblog/js/ajax.js}"></script>
+    <link th:href="@{/blog/myblog/css/shCoreDefault.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/blog/myblog/js/shCore.js}"></script>
+    <script th:src="@{/blog/myblog/plugin/layer/layer.js}"></script>
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+</head>
+<body>
+<!--top begin-->
+<div th:replace="blog/theme/myblog/header"></div>
+<!--top end-->
+<div class="container">
+<article>
+    <!--lbox begin-->
+    <div class="lbox">
+        <div class="content_box whitebg">
+            <h2 class="htitle"><span class="con_nav">您现在的位置是：<a href="/">首页</a>&nbsp;>&nbsp;<a href="/resource/list">资源</a>&nbsp;</span>博客相册</h2>
+            <h1 class="con_tilte">[[${resource.title}]]</h1>
+            <p class="bloginfo"><i class="avatar"><img src="/blog/myblog/images/avatar.jpg"></i>
+                <span th:text="${#dates.format(resource.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                点击 / <span th:text="${resource.hit}"></span>
+                文 / <span th:text="${resource.userName}"></span>
+            </p>
+            <p class="con_info" th:utext="${resource.description}"></p>
+
+            <div class="con_text">
+
+                <div class="articleDetailGroup" th:utext="${resource.detail}"></div>
+
+                <!--阅读全文-->
+                <div class="readall_box " style="display: none;">
+                    <div class="read_more_mask"></div>
+                    <a class="button" style="top:-25px;position:relative;">阅读全文</a>
+                    <script type="text/javascript">
+                        $(function () {
+                            if ($(".articleDetailGroup").height() >= 1200) {
+                                $(".articleDetailGroup").attr("style", "height:1200px;overflow-y:hidden;");
+                                $(".readall_box").show();
+                            }
+                            $(".readall_box a.button").click(function () {
+                                $(this).parents().find(".articleDetailGroup").attr("style", "");
+                                $(this).parents(".readall_box").hide();
+                            });
+                        })
+                    </script>
+                </div>
+
+                <div class="thumbs-content" style="margin: 20px auto 10px;width: 291px;text-align: center;">
+                    <span class="thumbs-button fa fa-thumbs-up"> 点赞 <span id="loveCount" th:text="${resource.upVote}"></span></span>
+                    <span class="reward-button fa fa-money"> 打赏
+						<p class="reward-content">
+							<span class="reward-img"><img src="/blog/myblog/images/weixin.png"><br>微信赞赏</span>
+							<span class="reward-img"><img src="/blog/myblog/images/zhifubao.png"><br>支付宝赞赏</span></p>
+						<span class="reward-bottom"></span>
+						<span class="reward-bottom-top"></span>
+						</span>
+                </div>
+
+                <div class="linkGroup layoutHide">
+                    <!-- 收藏 -->
+                    <div class="favoriteBtn" id="favorite">
+                        <a href="javascript:;" onclick="add_favorite();">收藏</a>
+                    </div>
+                </div>
+
+                <!-- 标签 -->
+                <div class="tagGroup">
+                </div>
+                <div class="clearfix"></div>
+
+                <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+
+                <script>
+                    var tid='[[${resource.id}]]';
+                    var comment_type="resource";
+                    $.ajax({
+                        url: ctx+"blog/resource/view",
+                        type: "post",
+                        dataType: "json",
+                        data: {"id":tid},
+                        success: function(json) {
+                            if(json.code!=0&&json.code!='0'){
+                                //console.log(json.msg);
+                            }
+                        }
+                    });
+
+                    $(function () {
+                        $(".thumbs-button").click(function () {
+                            $.ajax({
+                                url: ctx+"blog/resource/upVote",
+                                type: "post",
+                                dataType: "json",
+                                data: {"id":tid},
+                                success: function(json) {
+                                    if(json.code!=0&&json.code!='0'){
+                                        console.log(json.msg);
+                                    }else{
+                                        $("#loveCount").text(parseInt($("#loveCount").text())+1);
+                                    }
+                                }
+                            });
+                        })
+                    })
+                </script>
+            </div>
+        </div>
+        <div class="ad whitebg">
+            <a href='https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=ga24pnf9' target=_blank><img
+                    src='/blog/myblog/images/49acdd088cf7c28b71c7ac0d674a00e2.png' border=0 alt=''></a>
+        </div>
+        <div class="whitebg">
+            <h2 class="htitle">相关文章</h2>
+            <ul class="otherlink">
+                <li th:each="item,temp:${@angel.focusList(10)}">
+                    <a th:href="@{${'/article/'+item.id}}" th:title="${item.title}" th:text="${#strings.abbreviate(item.title,80)}"  class="item" target="_blank"></a>
+                </li>
+            </ul>
+        </div>
+        <!-- 评论区 开始 -->
+     <div class="whitebg wenzi">
+        <div  class="commonHeadLabel small mt20">
+            <div class="title">评论列表</div>
+        </div>
+        <div class="commentGrid comment">
+            <div  class="commentForm">
+                <form id="comment-form" class="form-horizontal mt-10">
+                    <input id="articleId" name="tid" type="hidden" th:value="${resource.id}">
+                    <input   name="type" type="hidden" value="resource">
+                    <div id="user-name-content" class="user-name-content">欢迎您：<b id="user-name"></b></div>
+                    <div class="guestBookGroup" id="user-info" style="display: none;padding: 0;">
+
+                        <div class="inputLabel" style="width: 30%;float:left;margin-right:38px;">
+                            <input id="nickname" type="text" class="inputBlock"  name="userName" placeholder="昵称(必填)">
+                        </div>
+                        <div class="inputLabel" style="width: 30%;float:left;margin-right: 38px;">
+                            <input id="qq" type="text" class="inputBlock"  name="qq" placeholder="QQ（可获取头像和昵称）">
+                        </div>
+                        <div class="inputLabel" style="width: 30%;float:left;">
+                            <input id="email" type="text" class="inputBlock"  name="email" placeholder="邮箱">
+                        </div>
+                    </div>
+
+                    <textarea id="comment-textarea" class="commentTextarea"  name="content" placeholder="我来说两句~"></textarea>
+
+                    <div class="btnBox"><input type="button" id="submitCommentBtn" class="submitBtn" name="dosubmit" value="发表评论"></div>
+                </form>
+
+            </div>
+            <hr class="hr0 mt-15"/>
+            <!-- 评论列表 -->
+            <div class="commentList comment"  id="commentList">
+
+            </div>
+
+        </div>
+        <script th:src="@{/blog/myblog/js/comment.js}"></script>
+        </div>
+     </div>
+    <!--lbox end-->
+    <div class="rbox">
+        <div class="whitebg paihang">
+            <h2 class="htitle">推荐阅读</h2>
+            <ul>
+                <li  th:each="item,temp:${@angel.focusList(8)}" >
+                    <i></i><a  th:href="@{${'/article/'+item.id}}" th:title="${item.title}" th:text="${#strings.abbreviate(item.title,80)}" target="_blank"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="whitebg tuijian">
+            <h2 class="htitle">站长推荐</h2>
+
+            <ul>
+                <li th:each="item,temp:${@angel.recommendedList(6)}" >
+                    <a th:href="@{${'/article/'+item.id}}" th:title="${item.title}"  target="_blank"><i>
+                        <img th:src="@{${item.coverImage}}"  th:alt="${item.title}" />
+                    </i>
+                        <p th:text="${item.title}"></p>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="ad whitebg imgscale">
+            <div class="brandGrid" id="brandGrid"><a href="https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=ga24pnf9" target="_blank"><img class="img" style="width:220px;" src="/images/cover/1688 300-310.png"></a></div>
+        </div>
+        <div class="whitebg cloud">
+            <h2 class="htitle">标签云</h2>
+            <ul>
+                <a th:each="item:${@angel.getTagsCloud()}"  th:href="@{${'/tag/'+item.tagId}}" th:text="${item.tagName}" class="item" target="_blank"></a>
+            </ul>
+        </div>
+
+        <div class="whitebg wenzi">
+            <h2 class="htitle">最新留言</h2>
+            <ul>
+                <li th:each="item:${@angel.newComments(4)}" class="item">
+                    <div class="username">[[${item.userName}]] <span th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}"></span></div>
+                    <div class="commentGroup">
+                        <p class="detailText" th:utext="${item.content}"></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</article>
+</div>
+
+<div th:replace="blog/theme/myblog/footer"></div>
+<script>
+
+    function add_favorite(title) {
+        $.ajax({
+            type: 'POST',
+            url: '{U("api/index/favorite")}',
+            data: 'title='+title+'&url='+location.href,
+            dataType: "json",
+            success: function (msg) {
+                if(msg.status == 1){
+                    $("#favorite").html('收藏成功');
+                }else{
+                    layer.msg('请先登录!');
+                }
+            }
+        });
+    };
+
+</script>
+
+</body>
+</html>

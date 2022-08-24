@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>博客系统介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/admin/css/bootstrap.min.css" th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/admin/css/font-awesome.min.css" th:href="@{/admin/css/font-awesome.css}" rel="stylesheet"/>
+    <link href="../static/admin/css/animate.css" th:href="@{/admin/css/animate.css}" rel="stylesheet"/>
+    <link href="../static/admin/css/style.css" th:href="@{/admin/css/style.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+    <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-sm-3">
+            <h2>Hello,Word!</h2>
+        </div>
+        <div class="col-sm-4">
+            <h2>Angel工作室博客系统</h2>
+            <p>一直想做一款Java语言的博客系统，看了很多优秀的开源项目但是发现没有合适自己的。于是利用空闲休息时间开始自己写一套属于自己的简单博客系统。如此有了操作简单易用Java博客系统。</p>
+            <p>
+                <b>当前版本：</b><span>v[[${version}]]</span>
+            </p>
+            <p>
+                <span class="label label-warning">&yen;免费开源</span>
+            </p>
+            <br>
+        </div>
+        <div class="col-sm-4">
+            <h4>技术选型：</h4>
+            <ol>
+                <li>核心框架：Spring Boot。</li>
+                <li>安全框架：Apache Shiro。</li>
+                <li>模板引擎：Thymeleaf。</li>
+                <li>持久层框架：MyBatis。</li>
+				<li>定时任务:Quartz。</li>
+                <li>数据库连接池：Druid。</li>
+                <li>工具类：Fastjson。</li>
+                <li>更多……</li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="ibox float-e-margins">
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/admin/js/jquery.min.js}"></script>
+    <script th:src="@{/admin/js/bootstrap.min.js}"></script>
+</body>
+</html>
